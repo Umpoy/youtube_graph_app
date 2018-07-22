@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Youtube Grapher</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+</head>
+
+<body>
+
+    <form>
+        <input id="channelSearchInput" />
+    </form>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#channelSearchInput").autocomplete({
+                source: function (request, response) {
+                    /* Google Developer ID (optional) */
+                    var apiKey = 'AI39si7ZLU83bKtKd4MrdzqcjTVI3DK9FvwJR6a4kB_SW_Dbuskit-mEYqskkSsFLxN5DiG1OBzdHzYfW0zXWjxirQKyxJfdkg';
+                    /* Search keyword */
+                    var query = request.term;
+                    /* youtube sorgusu */
+                    $.ajax({
+                        url: "http://suggestqueries.google.com/complete/search?hl=en&ds=yt&client=youtube&hjson=t&cp=1&q=" + query + "&key=" + apiKey + "&format=5&alt=json&callback=?",
+                        dataType: 'jsonp',
+                        success: function (data, textStatus, request) {
+                            response($.map(data[1], function (item) {
+                                return {
+                                    label: item[0],
+                                    value: item[0]
+                                }
+                            }));
+                        }
+                    });
+                },
+                /* You can use transaction is selected here to */
+                select: function (event, ui) {
+                    console.log("event", event);
+                    console.log("ui", ui);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
